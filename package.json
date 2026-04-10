@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "vercel dev",
-    "build": "echo \"No build step required\""
+    "start": "node backend/server.js"
   },
   "dependencies": {
     "cors": "^2.8.6",
+    "express": "^5.2.1",
     "neo4j-driver": "^6.0.1"
   }
 }

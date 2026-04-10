@@ -226,9 +226,7 @@ if (loginForm) {
 
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value;
-    const loginUrl = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
-      ? "http://127.0.0.1:3000/login"
-      : "/api/login";
+    const loginUrl = "http://127.0.0.1:3000/login";
 
     try {
       const res = await fetch(loginUrl, {
