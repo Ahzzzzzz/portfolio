@@ -242,6 +242,8 @@ if (loginForm) {
       if (data.status === "success") {
         alert("Login successful ✅");
         loginForm.reset();
+        // Redirect to graph page after successful login
+        window.location.href = "graph.html";
       } else {
         alert(data.message || "Invalid credentials ❌");
       }

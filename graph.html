@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Database Graph</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/vis-network@9.1.2/dist/vis-network.min.js"></script>
+  <style>
+    #graph {
+      height: 600px;
+      border: 1px solid #ddd;
+      margin: 20px;
+    }
+    .graph-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .graph-title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <p class="logo">Ahsan Asgar</p>
+  <div class="header-right">
+    <nav>
+      <a href="index.html">Projects</a>
+      <a href="certificates.html">Certificates</a>
+      <a href="skills.html">Skills</a>
+      <a href="graph.html">Database Graph</a>
+      <a href="login.html">Log In</a>
+    </nav>
+    <img src="vit-ap-logo.png" class="university-logo">
+  </div>
+</header>
+
+<section class="contact-hero">
+  <p class="section-tag">DATABASE GRAPH</p>
+  <h1 class="contact-title">Interactive Graph Database</h1>
+  <p class="contact-subtitle">
+    Explore the Neo4j database in an interactive graph visualization.
+  </p>
+
+  <div class="graph-container">
+    <div id="graph"></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>© 2026 Ahsan Asgar</p>
+  <img src="vit-ap-logo.png" class="footer-logo">
+</footer>
+
+<script>
+  // Load graph data and render
+  async function loadGraph() {
+    try {
+      const response = await fetch('http://127.0.0.1:3000/graph-data');
+      const data = await response.json();
+
+      if (data.nodes && data.edges) {
+        renderGraph(data.nodes, data.edges);
+      } else {
+        console.error('Invalid data format');
+      }
+    } catch (error) {
+      console.error('Failed to load graph data:', error);
+    }
+  }
+
+  function renderGraph(nodes, edges) {
+    const container = document.getElementById('graph');
+
+    const data = {
+      nodes: new vis.DataSet(nodes),
+      edges: new vis.DataSet(edges)
+    };
+
+    const options = {
+      nodes: {
+        shape: 'dot',
+        size: 20,
+        font: {
+          size: 14,
+          color: '#333'
+        },
+        borderWidth: 2,
+        shadow: true
+      },
+      edges: {
+        width: 2,
+        shadow: true,
+        font: {
+          size: 12,
+          align: 'middle'
+        },
+        arrows: {
+          to: { enabled: true, scaleFactor: 0.5 }
+        }
+      },
+      physics: {
+        enabled: true,
+        barnesHut: {
+          gravitationalConstant: -2000,
+          centralGravity: 0.3,
+          springLength: 95,
+          springConstant: 0.04,
+          damping: 0.09,
+          avoidOverlap: 0
+        }
+      },
+      groups: {
+        User: { color: { background: '#ff9999', border: '#cc0000' } },
+        Skill: { color: { background: '#99ff99', border: '#00cc00' } },
+        Person: { color: { background: '#9999ff', border: '#0000cc' } },
+        Message: { color: { background: '#ffff99', border: '#cccc00' } }
+      }
+    };
+
+    const network = new vis.Network(container, data, options);
+
+    // Add some interactivity
+    network.on("click", function (params) {
+      if (params.nodes.length > 0) {
+        const nodeId = params.nodes[0];
+        const node = data.nodes.get(nodeId);
+        alert(`Node: ${node.label}\nType: ${node.group}`);
+      }
+    });
+  }
+
+  // Load graph when page loads
+  window.addEventListener('load', loadGraph);
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>
