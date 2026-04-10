@@ -217,33 +217,35 @@ setInterval(nextContentSlide, 4000);
   autoPlayTimer = setInterval(nextNewsSlide, AUTO_PLAY_INTERVAL);
   resetProgress();
 })();
-// Contact form submit
-const form = document.getElementById("contactForm");
+// Login form submit
+const loginForm = document.getElementById("loginForm");
 
-if (form) {
-  form.addEventListener("submit", async function (e) {
+if (loginForm) {
+  loginForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const message = document.getElementById("message").value;
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+    const loginUrl = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
+      ? "http://127.0.0.1:3000/login"
+      : "/api/login";
 
     try {
-      const res = await fetch("http://localhost:3000/contact", {
+      const res = await fetch(loginUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ name, email, message })
+        body: JSON.stringify({ username, password })
       });
 
       const data = await res.json();
 
       if (data.status === "success") {
-        alert("Message sent successfully ✅");
-        form.reset();
+        alert("Login successful ✅");
+        loginForm.reset();
       } else {
-        alert("Error sending message ❌");
+        alert(data.message || "Invalid credentials ❌");
       }
     } catch (err) {
       console.error(err);
@@ -251,6 +253,7 @@ if (form) {
     }
   });
 }
+
 const openBtn = document.getElementById("openChat");
 const closeBtn = document.getElementById("closeChat");
 const chatBox = document.getElementById("chatBox");
@@ -258,34 +261,4 @@ const chatBox = document.getElementById("chatBox");
 if (openBtn) {
   openBtn.onclick = () => chatBox.style.display = "flex";
   closeBtn.onclick = () => chatBox.style.display = "none";
-}
-
-// Submit form
-const form = document.getElementById("contactForm");
-
-if (form) {
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const message = document.getElementById("message").value;
-
-    const res = await fetch("http://localhost:3000/contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ name, email, message })
-    });
-
-    const data = await res.json();
-
-    if (data.status === "success") {
-      alert("Sent ✅");
-      form.reset();
-    } else {
-      alert("Error ❌");
-    }
-  });
-}
+}  

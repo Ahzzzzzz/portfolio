@@ -825,6 +825,25 @@ p {
   z-index: 1000;
 }
 
+.login-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #ffffff;
+  color: #111;
+  padding: 14px 22px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid #333;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
+  z-index: 1000;
+}
+
+.login-btn:hover {
+  opacity: 0.92;
+}
+
 .chat-box {
   position: fixed;
   bottom: 80px;
